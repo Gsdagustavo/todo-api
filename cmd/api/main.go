@@ -1,8 +1,9 @@
 package main
 
 import (
-	"time"
+	"todo-api/internal/domain/usecases"
 	"todo-api/internal/infrastructure/persistence"
+	"todo-api/internal/infrastructure/repositories"
 )
 
 func main() {
@@ -12,5 +13,6 @@ func main() {
 	}
 	defer db.Close()
 
-	time.Sleep(5 * time.Hour)
+	todoRepository := repositories.NewMySQLTodoRepository(db)
+	_ = usecases.NewTodoUseCase(todoRepository)
 }

@@ -22,9 +22,8 @@ services:
       DB_PASSWORD: apppass
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_NAME: cachacadb
+      DB_NAME: tododb
       SERVER_PORT: 8080
-      JWT_TOKEN: secret
       BASE_URL: http://localhost:8080
     ports:
       - "8080:8080"

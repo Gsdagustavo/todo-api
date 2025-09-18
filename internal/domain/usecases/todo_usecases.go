@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"strings"
 	"todo-api/internal/domain/entities"
 	"todo-api/internal/domain/errors"
 	"todo-api/internal/domain/repositories"
@@ -15,9 +16,17 @@ func NewTodoUseCase(r repositories.TodoRepository) *TodoUseCase {
 }
 
 func (u *TodoUseCase) AddTodo(request entities.AddTodoRequest) (*entities.AddTodoResponse, error) {
-	if request.Title == "" {
+	validatedTitle := strings.TrimSpace(request.Title)
+	validatedDescription := strings.TrimSpace(request.Description)
+
+	if validatedTitle == "" {
 		return nil, errors.ErrInvalidTitle
 	}
 
-	return u.r.AddTodo(request)
+	req := entities.AddTodoRequest{
+		Title:       request.Title,
+		Description: validatedDescription,
+	}
+
+	return u.r.AddTodo(req)
 }

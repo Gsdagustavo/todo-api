@@ -6,30 +6,30 @@ type DatabaseConfig struct {
 	User     string
 	Password string
 	Host     string
-	Port     string
+	DBPort   string
 	DBName   string
 	Net      string
 }
 
 func (conf *DatabaseConfig) Address() string {
-	return conf.Host + ":" + conf.Port
+	return conf.Host + ":" + conf.DBPort
 }
 
 func NewDatabaseConfig() *DatabaseConfig {
 	var (
-		user       = os.Getenv("DB_USER")
-		passwd     = os.Getenv("DB_PASSWORD")
-		host       = os.Getenv("DB_HOST")
-		dbName     = os.Getenv("DB_NAME")
-		serverPort = os.Getenv("SERVER_PORT")
-		net        = "tcp"
+		user   = os.Getenv("DB_USER")
+		passwd = os.Getenv("DB_PASSWORD")
+		host   = os.Getenv("DB_HOST")
+		dbName = os.Getenv("DB_NAME")
+		dbPort = os.Getenv("DB_PORT")
+		net    = "tcp"
 	)
 
 	return &DatabaseConfig{
 		User:     user,
 		Password: passwd,
 		Host:     host,
-		Port:     serverPort,
+		DBPort:   dbPort,
 		DBName:   dbName,
 		Net:      net,
 	}

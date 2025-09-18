@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tododb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+  app:
+    build: .
+    depends_on:
+      - mysql
+    environment:
+      DB_USER: appuser
+      DB_PASSWORD: apppass
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: cachacadb
+      SERVER_PORT: 8080
+      JWT_TOKEN: secret
+      BASE_URL: http://localhost:8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:

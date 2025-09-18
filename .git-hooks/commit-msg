@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Read the content of the input file, containing the commit message
+INPUT_FILE=$1
+START_LINE=`head -n1 $INPUT_FILE`
+
+# The pattern checking if the commit follows the rules defined at:
+#   RND-Guides: https://git.lince.com.br/rnd/rnd_guides#commits-and-merge-requests
+COMMIT_MESSAGE_PATTERN="^((fix|feature|test|refactor|chore|performance|automation|revert|documentation)\(([0-9A-Za-z-]+)?\):)"
+
+# Check if the commit message follows the required patter
+if ! [[ "$START_LINE" =~ $COMMIT_MESSAGE_PATTERN ]]; then
+  # Print failure message with instructions on how to properly write a valid commit message
+  echo "INVALID COMMIT MESSAGE"
+  echo "  Example : fix(999): Check invalid params in method X"
+  echo "            ttt(xxx): Mmm"
+  echo "            ttt -> Type of commit"
+  echo "            ccc -> The ticket or issue number/code"
+  echo "            Mmm -> Your message, starting with an uppercase letter"
+  echo ""
+  echo "Commits types:"
+  echo " - fix           : Fixing a bug or regression in the code"
+  echo " - feature       : Implementing new features"
+  echo " - test          : Implementing or updating automated tests"
+  echo " - refactor      : Refactoring code without changing behaviour"
+  echo " - chore         : Changing project files that don't affect code behaviour"
+  echo " - performance   : Changing code to improve performance"
+  echo " - automation    : Changing automation scripts"
+  echo " - revert        : Rolling back commits that caused problems"
+  echo " - documentation : Changes in documentation files"
+  echo ""
+  echo " ** Commit guides: https://git.lince.com.br/rnd/rnd_guides#commits-and-merge-requests **"
+  exit 1
+fi
+
+# Good commit message
+exit 0

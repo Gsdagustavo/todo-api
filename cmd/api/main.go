@@ -1,7 +1,16 @@
 package main
 
-import "log"
+import (
+	"time"
+	"todo-api/internal/infrastructure/persistence"
+)
 
 func main() {
-	log.Printf("Hello World!")
+	db, err := persistence.OpenDatabase()
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	time.Sleep(5 * time.Hour)
 }

@@ -1,27 +1,28 @@
+version: '3.9'
+
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tododb
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppass
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: apppass
+      POSTGRES_DB: tododb
     ports:
-      - "3307:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
 
   app:
     build: .
     depends_on:
-      - mysql
+      - postgres
     environment:
       DB_USER: appuser
       DB_PASSWORD: apppass
-      DB_HOST: mysql
-      DB_PORT: 3306
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
       DB_NAME: tododb
       SERVER_PORT: 8080
       BASE_URL: http://localhost:8080
@@ -29,4 +30,4 @@ services:
       - "8080:8080"
 
 volumes:
-  mysql_data:
+  postgres_data:
